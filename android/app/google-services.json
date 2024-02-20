@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "949622844363",
+    "firebase_url": "https://woww-b2885.firebaseio.com",
+    "project_id": "woww-b2885",
+    "storage_bucket": "woww-b2885.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949622844363:android:2f5e9355a356f58c54e44e",
+        "android_client_info": {
+          "package_name": "com.example.house_rental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949622844363-0uk11krrl4psr7j47gn2nl92id9olbgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.house_rental",
+            "certificate_hash": "20ea88a937e55c8b9d368c1904c696f56f2df99c"
+          }
+        },
+        {
+          "client_id": "949622844363-ds3cokv9m93b2u3telnt606tubegosh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg2YnmKyqpJX61sf5cBdjGXWHNCk1VwHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949622844363-ds3cokv9m93b2u3telnt606tubegosh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949622844363-647vc9f5q1arknrv3tqfr0klqp6md0qb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.solarTaxi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949622844363:android:2ec4bea9a890119254e44e",
+        "android_client_info": {
+          "package_name": "com.example.solar_taxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949622844363-ds3cokv9m93b2u3telnt606tubegosh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg2YnmKyqpJX61sf5cBdjGXWHNCk1VwHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949622844363-ds3cokv9m93b2u3telnt606tubegosh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949622844363-647vc9f5q1arknrv3tqfr0klqp6md0qb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.solarTaxi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
