@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:house_rental/assets/images/image_constants.dart';
 import 'package:house_rental/assets/svgs/svg_constants.dart';
+import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/theme/app_theme.dart';
 import 'package:house_rental/core/theme/colors.dart';
 
@@ -34,8 +35,8 @@ class HouseContainer extends StatelessWidget {
                   gradient: houseContainerGradient,
                   borderRadius: BorderRadius.circular(22.0),
                 ),
-                height: 272,
-                width: 222,
+                height: Sizes().height(context, 0.272),
+                width: Sizes().width(context,0.444),
                 child: Stack(
                   children: [
                     Align(

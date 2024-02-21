@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental/core/usecase/usecase.dart';
 import 'package:house_rental/src/home/domain/entities/house.dart';
 import 'package:house_rental/src/home/domain/usecases/get_all_houses.dart';
+import 'package:house_rental/src/home/domain/usecases/get_category_house.dart';
 import 'package:house_rental/src/home/domain/usecases/get_house.dart';
 import 'package:house_rental/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental/src/home/domain/usecases/get_profile_gallery.dart';
@@ -16,12 +17,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetProfileCamera getProfileCamera;
   final GetProfileGallery getProfileGallery;
   final GetAllHouses getAllHouses;
+  final GetCategoryAllHouses getCategoryAllHouses;
   final GetHouse getHouse;
   HomeBloc(
       {required this.getProfileCamera,
       required this.getProfileGallery,
       required this.getAllHouses,
-      required this.getHouse})
+      required this.getHouse,
+      required this.getCategoryAllHouses,
+      })
       : super(HomeInitState()) {
    
 
@@ -51,7 +55,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (response) => GetHouseLoaded(houseDetail: response.data()),
         ),
       );
-    }));
+    }),);
+    
+    on<GetCategoryAllHousesEvent>(((event, emit) async {
+      emit(GetCategoryAllHousesLoading());
+
+      final response = await getCategoryAllHouses.call(event.params);
+
+      emit(
+        response.fold(
+          (error) => GetCategoryAllHousesError(errorMessage: error),
+          (response) => GetCategoryAllHousesLoaded(houseDetail: response.docs),
+        ),
+      );
+    }),);
+    
   }
 
   Future<bool> launchUrl(String type, String number) async {

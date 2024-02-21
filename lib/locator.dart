@@ -24,6 +24,7 @@ import 'package:house_rental/src/home/data/data_source/remote_ds.dart';
 import 'package:house_rental/src/home/data/repository/home_repository_implementation.dart';
 import 'package:house_rental/src/home/domain/repository/home_repository.dart';
 import 'package:house_rental/src/home/domain/usecases/get_all_houses.dart';
+import 'package:house_rental/src/home/domain/usecases/get_category_house.dart';
 import 'package:house_rental/src/home/domain/usecases/get_house.dart';
 import 'package:house_rental/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental/src/home/domain/usecases/get_profile_gallery.dart';
@@ -61,7 +62,9 @@ Future<void> initDependencies() async {
         getProfileCamera: locator(),
         getProfileGallery: locator(),
         getAllHouses: locator(),
-        getHouse: locator()),
+        getHouse: locator(),
+        getCategoryAllHouses: locator()
+        ),
   );
 
   //usecases
@@ -74,6 +77,12 @@ Future<void> initDependencies() async {
 
   locator.registerLazySingleton(
     () => CheckPhoneNumberChange(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => GetCategoryAllHouses(
       repository: locator(),
     ),
   );

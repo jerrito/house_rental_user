@@ -16,11 +16,6 @@ class HomeRemoteDatatsourceImpl extends HomeRemoteDatasource {
       Map<String, dynamic> params) async {
     final houseReference = await FirebaseFirestore.instance
         .collection("houses")
-        // .snapshots()
-        // .forEach((element) {
-        //   element.docChanges.docs.where((element) => false);
-        // })
-        // .collection("houses")
         .withConverter<HouseDetailModel>(
           fromFirestore: (snapshot, _) =>
               HouseDetailModel.fromJson(snapshot.data()!),
@@ -48,8 +43,17 @@ class HomeRemoteDatatsourceImpl extends HomeRemoteDatasource {
   }
   
   @override
-  Future<QuerySnapshot<HouseDetailModel>> getCategoryHouses(Map<String, dynamic> params) {
-    // TODO: implement getCategoryHouses
-    throw UnimplementedError();
+  Future<QuerySnapshot<HouseDetailModel>> getCategoryHouses(Map<String, dynamic> params) async{
+     final houseReference = await FirebaseFirestore.instance
+        .collection("houses")
+        .where("category",isEqualTo: params["category"],)
+        .withConverter<HouseDetailModel>(
+          fromFirestore: (snapshot, _) =>
+              HouseDetailModel.fromJson(snapshot.data()!),
+          toFirestore: (house, _) => house.toMap(),
+        )
+        .get();
+
+    return houseReference;
   }
 }

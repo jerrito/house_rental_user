@@ -66,16 +66,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final data = await buildProfileChangeBottomSheet(
+                         await buildProfileChangeBottomSheet(
                               context, 
                               homeBloc,
                               authBloc,
                               owner?.id,
                               owner?.phoneNumber,
                               );
-                          if (data == "updated") {
+                          
                             authBloc.add(const GetCacheDataEvent());
-                          }
+                          
                         },
                         child: const Icon(
                           size: 30,

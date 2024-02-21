@@ -11,6 +11,11 @@ class GetAllHousesEvent extends HomeEvent {
   GetAllHousesEvent({required this.params});
 }
 
+class GetCategoryAllHousesEvent extends HomeEvent {
+  final Map<String, dynamic> params;
+  GetCategoryAllHousesEvent({required this.params});
+}
+
 
 class GetHouseEvent extends HomeEvent {
   final Map<String, dynamic> params;

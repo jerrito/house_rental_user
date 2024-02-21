@@ -78,7 +78,7 @@ class HomeRepositoryImplementation implements HomeRepository {
       Map<String, dynamic> params) async {
     if (await networkInfo.isConnected) {
       try {
-        final response = await homeRemoteDatasource.getAllHouses(params);
+        final response = await homeRemoteDatasource.getCategoryHouses(params);
 
         return Right(response);
       } catch (e) {

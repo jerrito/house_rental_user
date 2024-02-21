@@ -24,6 +24,9 @@ class HouseCategories extends StatelessWidget {
                               false
                             ];
                             return  RowButtons(
+                              onTap: (){
+                                
+                              },
                               isSelected: isSelected[index],
                               label: "House",
                             );

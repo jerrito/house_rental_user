@@ -148,7 +148,7 @@ class _ChangeNumberPageState extends State<ChangeNumberPage> {
           if (state is GetUserError) {
             Map<String, dynamic> params = {
               "id": id ?? "",
-              "phone_number": newNumberValue ?? newNumberController.text
+              "phone_number": "+233$newNumberValue" 
             };
             authBloc.add(
               UpdateUserEvent(params: params),
@@ -181,7 +181,7 @@ class _ChangeNumberPageState extends State<ChangeNumberPage> {
               onPressed: () {
                 if (formKey.currentState?.validate() == true) {
                   Map<String, dynamic> params = {
-                    "phone_number": newNumberValue ?? newNumberController.text
+                    "phone_number": "+233$newNumberValue"
                   };
                   authBloc.add(
                     GetUserEvent(params: params),

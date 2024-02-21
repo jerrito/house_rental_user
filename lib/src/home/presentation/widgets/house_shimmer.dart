@@ -19,7 +19,7 @@ class HouseShimmer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
           
-        Space().height(context,0.04),
+        Space().height(context,0.05),
       Padding(
      padding:  EdgeInsets.symmetric(
         horizontal:Sizes().width(context, 0.04)),
