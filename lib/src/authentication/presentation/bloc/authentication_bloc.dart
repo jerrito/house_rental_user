@@ -18,7 +18,6 @@ import 'package:house_rental/src/authentication/domain/usecases/verify_otp.dart'
 import 'package:house_rental/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:house_rental/src/home/domain/usecases/up_load_image.dart';
-import 'package:house_rental/src/home/presentation/bloc/home_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 part 'authentication_event.dart';

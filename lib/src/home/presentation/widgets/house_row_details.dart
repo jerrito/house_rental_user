@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:house_rental/assets/images/image_constants.dart';
 import 'package:house_rental/assets/svgs/svg_constants.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
@@ -40,7 +39,7 @@ class HouseRowDetails extends StatelessWidget {
                         height: 80,
                         width: 100,
                         errorBuilder: (_, __, ___) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 80,
                         width: 100,
                           );

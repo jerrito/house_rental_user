@@ -140,5 +140,5 @@ class UpLoadImageError extends AuthenticationState {
 
 class UpLoadImageLoaded extends AuthenticationState {
   final String imageURL;
-  UpLoadImageLoaded({required this.imageURL});
+const  UpLoadImageLoaded({required this.imageURL});
 }

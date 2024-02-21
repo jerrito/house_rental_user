@@ -38,7 +38,7 @@ buildProfileChangeBottomSheet(
                       if (state is UpLoadImageLoaded) {
                         Map<String, dynamic> params = {
                           "id": id ?? "",
-                          "profile_URL": state.imageURL,
+                          "profile_url": state.imageURL,
                         };
                         authBloc.add(UpdateUserEvent(params: params));
                       }

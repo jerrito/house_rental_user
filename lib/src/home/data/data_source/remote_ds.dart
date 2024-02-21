@@ -46,12 +46,11 @@ class HomeRemoteDatatsourceImpl extends HomeRemoteDatasource {
   Future<QuerySnapshot<HouseDetailModel>> getCategoryHouses(Map<String, dynamic> params) async{
      final houseReference = await FirebaseFirestore.instance
         .collection("houses")
-        .where("category",isEqualTo: params["category"],)
         .withConverter<HouseDetailModel>(
           fromFirestore: (snapshot, _) =>
               HouseDetailModel.fromJson(snapshot.data()!),
           toFirestore: (house, _) => house.toMap(),
-        )
+        ).where("category",isEqualTo: params["category"],)
         .get();
 
     return houseReference;

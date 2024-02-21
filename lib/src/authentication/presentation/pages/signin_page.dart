@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/strings/app_strings.dart';
 import 'package:house_rental/core/widgets/bottom_sheet.dart';
 
@@ -14,7 +15,6 @@ import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/pages/otp_page.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_textfield.dart';
-import 'package:house_rental/src/home/presentation/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -75,7 +75,7 @@ class _SigninPageState extends State<SigninPage> {
           },
         ),
         body: FormBuilder(
-          key:formKey,
+          key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -123,7 +123,7 @@ class _SigninPageState extends State<SigninPage> {
                         // print("verification completed ${authCredential.smsCode}");
                         // print(" ${authCredential.verificationId}");
                         User? user = FirebaseAuth.instance.currentUser;
-          
+
                         if (state.authCredential.smsCode != null) {
                           try {
                             UserCredential credential = await user!
@@ -136,10 +136,10 @@ class _SigninPageState extends State<SigninPage> {
                           }
                         }
                       }
-          
+
                       if (state is GenericError) {
                         if (!context.mounted) return;
-          
+
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(state.errorMessage)));
                       }
@@ -150,7 +150,7 @@ class _SigninPageState extends State<SigninPage> {
                           child: CircularProgressIndicator(),
                         );
                       }
-          
+
                       return FormBuilderField<String>(
                           name: "phoneNumber",
                           validator: (value) {
@@ -163,7 +163,7 @@ class _SigninPageState extends State<SigninPage> {
                             if (!isLength(value, 9)) {
                               return 'must be at least 8 characters';
                             }
-          
+
                             return null;
                           },
                           onChanged: (value) {
@@ -181,31 +181,29 @@ class _SigninPageState extends State<SigninPage> {
                           });
                     },
                   ),
-          
+
                   //email & password bloc
                   child: BlocConsumer(
                       bloc: authBloc,
                       listener: (context, state) async {
-                        final preference = await SharedPreferences.getInstance();
+                        final preference =
+                            await SharedPreferences.getInstance();
                         var uid = preference.getString("UIDKey");
                         var phoneNumber = preference.getString("phoneNumber");
-          
+
                         if (state is SigninLoaded) {
                           if (!context.mounted) return;
-                          debugPrint(uid);
-                          debugPrint(phoneNumber);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return HomePage(
-                                uid: uid,
-                                isLogin: true,
-                                phoneNumber: phoneNumber,
-                              );
-                            }),
+                          
+                          context.goNamed("homePage",
+                          queryParameters: {
+                            "uid":uid,
+                            "isLogin":"true",
+                            "phone_number":phoneNumber
+                          }
                           );
+                          
                         }
-          
+
                         if (state is SigninError) {
                           if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -243,7 +241,7 @@ class _SigninPageState extends State<SigninPage> {
                                     onChanged: (p0) => context.didChange(p0),
                                   );
                                 }),
-          
+
                             //password
                             FormBuilderField<String>(
                                 name: "password",
@@ -251,11 +249,11 @@ class _SigninPageState extends State<SigninPage> {
                                   if (value?.isEmpty ?? true) {
                                     return fieldRequired;
                                   }
-          
+
                                   if (!isLength(value!, 8)) {
                                     return mustBeCharacters;
                                   }
-          
+
                                   return null;
                                 },
                                 builder: (context) {

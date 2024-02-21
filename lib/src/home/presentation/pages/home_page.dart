@@ -15,7 +15,7 @@ import 'package:house_rental/src/home/presentation/bloc/home_bloc.dart';
 import 'package:house_rental/src/home/presentation/widgets/home_drawer.dart';
 import 'package:house_rental/src/home/presentation/widgets/house_row_details.dart';
 import 'package:house_rental/src/home/presentation/widgets/house_shimmer.dart';
-import 'package:house_rental/src/home/presentation/widgets/list_view_buttons.dart';
+import 'package:house_rental/src/home/presentation/widgets/row_buttons.dart';
 import 'package:house_rental/src/home/presentation/widgets/search_textfield.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,9 +36,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final authBloc = locator<AuthenticationBloc>();
   final homeBloc = locator<HomeBloc>();
+  final homeBloc2 = locator<HomeBloc>();
   final searchController = TextEditingController();
 
   User? user;
+  List<String> category = [
+    "house",
+    "hotel",
+    "apartment",
+    "single room",
+    "chamber and hall"
+  ];
+  String value = "house";
   @override
   void initState() {
     super.initState();
@@ -48,9 +57,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //debugPrint(user?.id);
-
-    debugPrint(user?.uid);
     return Scaffold(
         drawer: HomeDrawer(
           user: user ??
@@ -74,16 +80,28 @@ class _HomePageState extends State<HomePage> {
                 setState(() {});
                 Map<String, dynamic> params = {};
                 homeBloc.add(GetAllHousesEvent(params: params));
+                Map<String, dynamic> param = {"category": "house"};
+                homeBloc2.add(
+                  GetCategoryAllHousesEvent(params: param),
+                );
               }
             },
             child: BlocConsumer(
                 bloc: homeBloc,
-                listener: (context, state) {},
+                listener: (context, state) {
+                  if (state is GetCategoryAllHousesLoaded) {
+                    print(state.houseDetail[0].data());
+                  }
+                  if (state is GetCategoryAllHousesError) {
+                  
+                  }
+                },
                 builder: (context, state) {
                   if (state is GetALLHousesLoading) {
                     return const HouseShimmer();
                   }
-                  if (state is GetAllHousesLoaded) {
+                  if (state is GetAllHousesLoaded &&
+                      state is GetCategoryAllHousesLoaded) {
                     return SafeArea(
                       child: SingleChildScrollView(
                         child: Column(
@@ -142,8 +160,6 @@ class _HomePageState extends State<HomePage> {
                                               "phone_number": user?.phoneNumber,
                                               "uid": widget.uid,
                                             };
-                                            debugPrint(user?.uid);
-                                            debugPrint(user?.phoneNumber);
                                             authBloc.add(
                                               AddIdEvent(
                                                 params: params,
@@ -162,160 +178,213 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Space().height(context, 0.02),
 
-                              const HouseCategories(),
-
-                              Space().height(context, 0.05),
-
                               CarouselSlider.builder(
-                                  itemCount: state.houseDetail.length,
+                                  itemCount: 5,
                                   options: CarouselOptions(
-                                      height: Sizes().height(context,0.342),
-                                       viewportFraction: 0.6),
-                                  itemBuilder: (context, index, value) {
-                                    final houseData =
-                                        state.houseDetail[index].data();
-                                    final id = state.houseDetail[index].id;
-                                    return GestureDetector(
+                                    viewportFraction: 0.3,
+                                    height: 50,
+                                    reverse: true,
+                                  ),
+                                  itemBuilder: (context, index, values) {
+                                    return RowButtons(
                                       onTap: () {
-                                        context.pushNamed("houseDetail",
-                                            queryParameters: {"id": id});
+                                        Map<String, dynamic> params = {
+                                          "category": category[index]
+                                        };
+                                        value = category[index];
+                                        setState(() {});
+                                        homeBloc2.add(GetCategoryAllHousesEvent(
+                                            params: params));
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Center(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: houseContainerGradient,
-                                              borderRadius:
-                                                  BorderRadius.circular(Sizes().height(context,0.05)),
-                                            ),
-                                            height: Sizes().height(context,0.342),
-                                            width: Sizes().height(context,0.444),
-                                            child: Stack(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              22.0),
-                                                      child: Image.network(
-                                                        houseData.images?[0] ??
-                                                            "",
-                                                        errorBuilder:
-                                                            (_, __, ___) {
-                                                          return const SizedBox(
-                                                            height: 272,
-                                                          );
-                                                        },
-                                                        height: 272,
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                        //opacity: const AlwaysStoppedAnimation(.3),
-                                                      )
-
-                                                      //child: ,
-                                                      ),
-                                                ),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        top: 25.0,
-                                                        right: 12,
-                                                      ),
-                                                      child: Container(
-                                                        width: 70,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              houseContainerRowColor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            20.0,
-                                                          ),
-                                                        ),
-                                                        child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                locationSVG,
-                                                              ),
-                                                              const Text(
-                                                                "1.8 km",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      houseWhiteColor,
-                                                                ),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                    )),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 20.0,
-                                                        bottom: 16,
-                                                      ),
-                                                      child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              houseData
-                                                                      .houseName ??
-                                                                  "DreamsVille House",
-                                                              style: appTheme
-                                                                  .textTheme
-                                                                  .displayLarge!
-                                                                  .copyWith(
-                                                                color:
-                                                                    houseWhiteColor,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              houseData
-                                                                      .description ??
-                                                                  "Jl. Sultan Iskandar Muda",
-                                                              style: appTheme
-                                                                  .textTheme
-                                                                  .displaySmall!
-                                                                  .copyWith(
-                                                                      color:
-                                                                          searchTextColor3,
-                                                                      fontSize:
-                                                                          12,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
-                                                            ),
-                                                          ]),
-                                                    ))
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      isSelected: category[index] == value
+                                          ? true
+                                          : false,
+                                      label: category[index],
                                     );
                                   }),
+                              Space().height(context, 0.05),
+
+                              BlocBuilder(
+                                bloc: homeBloc2,
+                               
+                                builder: (context, state) {
+                                  if (state is GetCategoryAllHousesLoading) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (state is GetCategoryAllHousesLoaded) {
+                                    return CarouselSlider.builder(
+                                        itemCount: state.houseDetail.length,
+                                        options: CarouselOptions(
+                                            height:
+                                                Sizes().height(context, 0.342),
+                                            viewportFraction: 0.6),
+                                        itemBuilder: (context, index, value) {
+                                          final houseData =
+                                              state.houseDetail[index].data();
+                                          print(houseData);
+                                          final id =
+                                              state.houseDetail[index].id;
+                                          return GestureDetector(
+                                            onTap: () {
+                                              context.pushNamed("houseDetail",
+                                                  queryParameters: {"id": id});
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Center(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient:
+                                                        houseContainerGradient,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            Sizes().height(
+                                                                context, 0.05)),
+                                                  ),
+                                                  height: Sizes()
+                                                      .height(context, 0.342),
+                                                  width: Sizes()
+                                                      .height(context, 0.444),
+                                                  child: Stack(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        22.0),
+                                                            child:
+                                                                Image.network(
+                                                              houseData.images?[
+                                                                      0] ??
+                                                                  "",
+                                                              errorBuilder:
+                                                                  (_, __, ___) {
+                                                                return const SizedBox(
+                                                                  height: 272,
+                                                                );
+                                                              },
+                                                              height: 272,
+                                                              width: double
+                                                                  .infinity,
+                                                              fit: BoxFit.cover,
+                                                              //opacity: const AlwaysStoppedAnimation(.3),
+                                                            )
+
+                                                            //child: ,
+                                                            ),
+                                                      ),
+                                                      Align(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 25.0,
+                                                              right: 12,
+                                                            ),
+                                                            child: Container(
+                                                              width: 70,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    houseContainerRowColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  20.0,
+                                                                ),
+                                                              ),
+                                                              child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      locationSVG,
+                                                                    ),
+                                                                    const Text(
+                                                                      "1.8 km",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color:
+                                                                            houseWhiteColor,
+                                                                      ),
+                                                                    )
+                                                                  ]),
+                                                            ),
+                                                          )),
+                                                      Align(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              left: 20.0,
+                                                              bottom: 16,
+                                                            ),
+                                                            child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    houseData
+                                                                            .houseName ??
+                                                                        "DreamsVille House",
+                                                                    style: appTheme
+                                                                        .textTheme
+                                                                        .displayLarge!
+                                                                        .copyWith(
+                                                                      color:
+                                                                          houseWhiteColor,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    houseData
+                                                                            .description ??
+                                                                        "Jl. Sultan Iskandar Muda",
+                                                                    style: appTheme
+                                                                        .textTheme
+                                                                        .displaySmall!
+                                                                        .copyWith(
+                                                                            color:
+                                                                                searchTextColor3,
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.w400),
+                                                                  ),
+                                                                ]),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }
+                                  return const SizedBox();
+                                },
+                              ),
 
                               Space().height(context, 0.032),
 
