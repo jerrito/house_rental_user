@@ -4,11 +4,7 @@ class HomeState {}
 
 class HomeInitState extends HomeState {}
 
-
-
-
-
-class GetALLHousesLoading extends HomeState {}
+class GetAllHousesLoading extends HomeState {}
 
 class GetAllHousesError extends HomeState {
   final String errorMessage;
@@ -19,7 +15,6 @@ class GetAllHousesLoaded extends HomeState {
   final List<QueryDocumentSnapshot<HouseDetail>> houseDetail;
   GetAllHousesLoaded({required this.houseDetail});
 }
-
 
 class GetHouseLoading extends HomeState {}
 

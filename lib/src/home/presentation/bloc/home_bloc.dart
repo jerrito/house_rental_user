@@ -16,20 +16,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetAllHouses getAllHouses;
   final GetCategoryAllHouses getCategoryAllHouses;
   final GetHouse getHouse;
-  HomeBloc(
-      {required this.getProfileCamera,
-      required this.getProfileGallery,
-      required this.getAllHouses,
-      required this.getHouse,
-      required this.getCategoryAllHouses,
-      })
-      : super(HomeInitState()) {
-   
-
-    
-
+  HomeBloc({
+    required this.getProfileCamera,
+    required this.getProfileGallery,
+    required this.getAllHouses,
+    required this.getHouse,
+    required this.getCategoryAllHouses,
+  }) : super(HomeInitState()) {
     on<GetAllHousesEvent>(((event, emit) async {
-      emit(GetALLHousesLoading());
+      emit(GetAllHousesLoading());
 
       final response = await getAllHouses.call(event.params);
 
@@ -41,32 +36,36 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
     }));
 
-    on<GetHouseEvent>(((event, emit) async {
-      emit(GetHouseLoading());
+    on<GetHouseEvent>(
+      ((event, emit) async {
+        emit(GetHouseLoading());
 
-      final response = await getHouse.call(event.params);
+        final response = await getHouse.call(event.params);
 
-      emit(
-        response.fold(
-          (error) => GetHouseError(errorMessage: error),
-          (response) => GetHouseLoaded(houseDetail: response.data()),
-        ),
-      );
-    }),);
-    
-    on<GetCategoryAllHousesEvent>(((event, emit) async {
-      emit(GetCategoryAllHousesLoading());
+        emit(
+          response.fold(
+            (error) => GetHouseError(errorMessage: error),
+            (response) => GetHouseLoaded(houseDetail: response.data()),
+          ),
+        );
+      }),
+    );
 
-      final response = await getCategoryAllHouses.call(event.params);
+    on<GetCategoryAllHousesEvent>(
+      ((event, emit) async {
+        emit(GetCategoryAllHousesLoading());
 
-      emit(
-        response.fold(
-          (error) => GetCategoryAllHousesError(errorMessage: error),
-          (response) => GetCategoryAllHousesLoaded(houseDetail: response.docs),
-        ),
-      );
-    }),);
-    
+        final response = await getCategoryAllHouses.call(event.params);
+
+        emit(
+          response.fold(
+            (error) => GetCategoryAllHousesError(errorMessage: error),
+            (response) =>
+                GetCategoryAllHousesLoaded(houseDetail: response.docs),
+          ),
+        );
+      }),
+    );
   }
 
   Future<bool> launchUrl(String type, String number) async {
