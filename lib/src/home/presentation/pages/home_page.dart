@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> {
   List<String> category = [
     "house",
     "hotel",
-    "apartment",
+    "apartments",
     "single room",
-    "chamber and hall"
+    "chamber & hall"
   ];
   String value = "house";
   @override
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                         params: params,
                                       ),
                                     );
-                                  } else {}
+                                  } 
                                 });
                               },
                               child: SvgPicture.asset(

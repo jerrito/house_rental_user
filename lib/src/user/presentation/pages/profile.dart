@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
             }
           },
           builder: (context, state) {
-            if (state is GetCacheDataLoaded) {                         
+            if (state is GetCacheDataLoaded) {
               return Column(
                 children: [
                   Stack(
@@ -66,19 +66,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                         await buildProfileChangeBottomSheet(
-                              context, 
-                              homeBloc,
-                              authBloc,
-                              owner?.id,
-                              owner?.phoneNumber,
-                              );
-                          
-                            authBloc.add(const GetCacheDataEvent());
-                          
+                          await buildProfileChangeBottomSheet(
+                            context,
+                            homeBloc,
+                            authBloc,
+                            owner?.id,
+                            owner?.phoneNumber,
+                          );
+
+                          authBloc.add(const GetCacheDataEvent());
                         },
                         child: const Icon(
-                          size: 30,
+                          size: 40,
                           Icons.camera_alt_outlined,
                         ),
                       )
@@ -95,9 +94,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           owner?.firstName ?? "",
                           owner?.lastName ?? "",
                           "First Name",
-                          "Last Name",
-                          authBloc,
+                          "Last Name",                  
                           owner?.id ?? "",
+                          authBloc,
                         );
 
                         authBloc.add(const GetCacheDataEvent());
@@ -105,8 +104,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       data: "${owner?.firstName} ${owner?.lastName}"),
                   ProfileList(
                       onPressed: () async {
-                        await showProfileDialog(context, owner?.email ?? "",
-                            "Email", authBloc, owner?.id ?? "", "email");
+                        await showProfileDialog(
+                          context,
+                          owner?.email ?? "",
+                          "Email",
+                          owner?.id ?? "",
+                          "email",
+                          authBloc,
+                        );
                         authBloc.add(const GetCacheDataEvent());
                       },
                       data: "${owner?.email}"),

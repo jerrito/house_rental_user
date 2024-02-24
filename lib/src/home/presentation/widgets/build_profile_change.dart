@@ -44,7 +44,7 @@ buildProfileChangeBottomSheet(
                       }
 
                       if (state is UpdateUserLoaded) {
-                        context.pop("updated");
+                        context.pop();
                       }
 
                       if (state is UpdateUserError) {
