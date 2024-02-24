@@ -9,6 +9,7 @@ import 'package:house_rental/assets/svgs/svg_constants.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/strings/app_strings.dart';
 import 'package:house_rental/core/widgets/bottom_sheet.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/pages/otp_page.dart';
@@ -97,15 +98,21 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                 );
               } else {
                 if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Entered number not equal to old number")));
+                showToastInfo(
+                  context: context,
+                  label: "Entered number not equal to old number",
+                  isFailed: true,
+                );
               }
             }
             if (state is CheckPhoneNumberChangeError) {
               if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                    content: Text(state.errorMessage)));
-              
+              showToastInfo(
+                  context: context,
+                  label:state.errorMessage,
+                  isFailed: true,
+                );
+            
             }
           },
           builder: (context, state) {
@@ -184,12 +191,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                           children: [
                             SizedBox(
                                 height: 35,
-                                // decoration: BoxDecoration(
-                                //   borderRadius: BorderRadius.circular(10),
-                                //   border: Border.all(
-                                //    // color: Colors.black
-                                //   )
-                                // ),
+                                
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(

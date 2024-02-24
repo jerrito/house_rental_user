@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/widgets/bottom_sheet.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_textfield.dart';
@@ -70,11 +71,19 @@ class _SignupPageState extends State<SignupPage> {
             bloc: authBloc,
             listener: (context, state) {
               if (state is GenericError) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                 showToastInfo(
+                  context: context,
+                  label:state.errorMessage,
+                  isFailed: true,
+                );
               }
 
               if (state is SignupLoaded) {
+                showToastInfo(
+                  context: context,
+                  label:"Successfully created account",
+                  isFailed: false,
+                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {

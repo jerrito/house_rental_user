@@ -7,6 +7,7 @@ import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/theme/app_theme.dart';
 import 'package:house_rental/core/theme/colors.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental/src/home/presentation/bloc/home_bloc.dart';
@@ -42,7 +43,15 @@ class _HouseDetailPageState extends State<HouseDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if(state is GetHouseError){
+              showToastInfo(
+                  context: context,
+                  label:state.errorMessage,
+                  isFailed: true,
+                );
+            }
+          },
           bloc: homeBloc,
           builder: (context, state) {
             if (state is GetHouseLoading) {
@@ -55,7 +64,6 @@ class _HouseDetailPageState extends State<HouseDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //Space().height(context, 0.05),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: Sizes().width(context, 0.04),
@@ -70,14 +78,7 @@ class _HouseDetailPageState extends State<HouseDetailPage> {
                             context.pop();
                           },
                           favouriteOnTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) {
-                              return const  HouseShimmer();
-                          }
-                            
-                          ));
+                          
                           },
                         ),
                       ),

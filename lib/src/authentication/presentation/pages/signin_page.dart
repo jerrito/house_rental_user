@@ -10,6 +10,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/strings/app_strings.dart';
 import 'package:house_rental/core/widgets/bottom_sheet.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
@@ -120,8 +121,6 @@ class _SigninPageState extends State<SigninPage> {
                         );
                       }
                       if (state is CodeCompleted) {
-                        // print("verification completed ${authCredential.smsCode}");
-                        // print(" ${authCredential.verificationId}");
                         User? user = FirebaseAuth.instance.currentUser;
 
                         if (state.authCredential.smsCode != null) {
@@ -139,9 +138,11 @@ class _SigninPageState extends State<SigninPage> {
 
                       if (state is GenericError) {
                         if (!context.mounted) return;
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(state.errorMessage)));
+                        showToastInfo(
+                          context: context,
+                          label: state.errorMessage,
+                          isFailed: true,
+                        );
                       }
                     },
                     builder: (context, state) {
@@ -193,21 +194,21 @@ class _SigninPageState extends State<SigninPage> {
 
                         if (state is SigninLoaded) {
                           if (!context.mounted) return;
-                          
-                          context.goNamed("homePage",
-                          queryParameters: {
-                            "uid":uid,
-                            "isLogin":"true",
-                            "phone_number":phoneNumber
-                          }
-                          );
-                          
+
+                          context.goNamed("homePage", queryParameters: {
+                            "uid": uid,
+                            "isLogin": "true",
+                            "phone_number": phoneNumber
+                          });
                         }
 
                         if (state is SigninError) {
                           if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.errorMessage)));
+                          showToastInfo(
+                            context: context,
+                            label: state.errorMessage,
+                            isFailed: true,
+                          );
                         }
                       },
                       builder: (context, state) {

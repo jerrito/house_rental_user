@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:oktoast/oktoast.dart';
 
-ToastFuture showToast(
-    BuildContext context, String label, Color? backgroundColor, bool isFailed) {
+ToastFuture showToastInfo(
+    { required BuildContext context,
+    required String label,
+      required bool isFailed,
+        }) {
   return // position and second have default value, is optional
       showToastWidget(
     duration: const Duration(seconds: 3),

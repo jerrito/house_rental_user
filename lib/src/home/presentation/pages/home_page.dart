@@ -8,6 +8,7 @@ import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/theme/app_theme.dart';
 import 'package:house_rental/core/theme/colors.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/domain/entities/user.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key:scaffoldKey,
+        key: scaffoldKey,
         drawer: HomeDrawer(
           user: user ??
               User(
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                         params: params,
                                       ),
                                     );
-                                  } 
+                                  }
                                 });
                               },
                               child: SvgPicture.asset(
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                           itemCount: category.length,
                           options: CarouselOptions(
                             viewportFraction: 0.3,
-                            height:Sizes().height(context,0.05),
+                            height: Sizes().height(context, 0.05),
                             reverse: true,
                           ),
                           itemBuilder: (context, index, values) {
@@ -175,7 +176,10 @@ class _HomePageState extends State<HomePage> {
                                 value = category[index];
                                 setState(() {});
                                 homeBloc2.add(
-                                    GetCategoryAllHousesEvent(params: params));
+                                  GetCategoryAllHousesEvent(
+                                    params: params,
+                                  ),
+                                );
                               },
                               isSelected:
                                   category[index] == value ? true : false,
@@ -184,7 +188,16 @@ class _HomePageState extends State<HomePage> {
                           }),
                       Space().height(context, 0.05),
 
-                      BlocBuilder(
+                      BlocConsumer(
+                        listener: (context, state) {
+                          if (state is GetCategoryAllHousesError) {
+                            showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
+                          }
+                        },
                         bloc: homeBloc2,
                         builder: (context, state) {
                           if (state is GetCategoryAllHousesLoading) {
@@ -199,7 +212,6 @@ class _HomePageState extends State<HomePage> {
                                 itemBuilder: (context, index, value) {
                                   final houseData =
                                       state.houseDetail[index].data();
-                                  print(houseData);
                                   final id = state.houseDetail[index].id;
                                   return GestureDetector(
                                     onTap: () {
@@ -371,7 +383,15 @@ class _HomePageState extends State<HomePage> {
                       //Space().height(context, 0.02),
 
                       BlocConsumer(
-                          listener: (context, state) {},
+                          listener: (context, state) {
+                            if (state is GetAllHousesError) {
+                              showToastInfo(
+                                context: context,
+                                label: state.errorMessage,
+                                isFailed: true,
+                              );
+                            }
+                          },
                           bloc: homeBloc,
                           builder: (context, state) {
                             if (state is GetAllHousesLoading) {

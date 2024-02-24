@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/locator.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/pages/signup_page.dart';
@@ -121,9 +122,12 @@ class _OTPPageState extends State<OTPPage> {
           listener: (conteext, state) async {
             if (state is VerifyOTPFailed) {
               debugPrint(state.errorMessage);
-              OKToast(child: Text(state.errorMessage));
-              // PrimarySnackBar(context)
-              //     .displaySnackBar(message: state.errorMessage);
+              showToastInfo(
+              context:  context,
+               label: state.errorMessage,
+               isFailed:true,
+                     );
+             
             }
             if (state is VerifyOTPLoaded) {
               debugPrint("calling call back function");
@@ -201,7 +205,7 @@ class _OTPPageState extends State<OTPPage> {
                                       widget.otpRequest.verifyId.toString(),
                                   smsCode: _otpString);
                           authBloc.add(VerifyOTPEvent(params: params));
-                          debugPrint("Done");
+                          
                         });
                       },
                     ),
@@ -221,7 +225,6 @@ class _OTPPageState extends State<OTPPage> {
                             onPressed: () {
                               authBloc.add(PhoneNumberEvent(
                                   phoneNumber: widget.otpRequest.phoneNumber!));
-                              //phoneSignIn(widget.otpRequest.phoneNumber.toString());  //phoneSignIn(phoneNumber: userNumber.text);
                             },
                             child: Visibility(
                               visible: !isResend,
@@ -243,7 +246,6 @@ class _OTPPageState extends State<OTPPage> {
   Row timer() {
     return Row(
       children: [
-        // Text("This code will expire in "),
         Visibility(
           visible: isResend,
           replacement: const Text(
@@ -269,44 +271,9 @@ class _OTPPageState extends State<OTPPage> {
 
   void onKeyPressed(String inputValue) {
     setState(() {
-      //print("This is "+inputValue);
       _otpString = inputValue;
     });
   }
 
-  // _verifyOtpCode() async {
-  //   setState(() {
-  //     isLoading = true;
-  //     _wrongOtp = false;
-  //   });
-  //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //       verificationId: widget.verifyId.toString(), smsCode: _otpString);
 
-  //   try {
-  //     var result = await _auth.signInWithCredential(credential);
-
-  //     if (result.user != null) {
-  //       widget.onSuccessCallback?.call();
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (kDebugMode) {
-  //       print(e);
-  //     }
-
-  //     if (e.code == "invalid-verification-code") {
-  //       setState(() {
-  //         _wrongOtp = true;
-  //       });
-  //     }
-
-  //     // PrimarySnackBar(context).displaySnackBar(
-  //     //   message: "Wrong OTP code provided",
-  //     //   backgroundColor: AppColors.errorRed,
-  //     // );
-  //   }
-
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
 }
