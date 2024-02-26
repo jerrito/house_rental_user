@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/usecase/usecase.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental/src/home/presentation/bloc/home_bloc.dart';
@@ -32,7 +33,11 @@ buildProfileChangeBottomSheet(
                     bloc: authBloc,
                     listener: (context, state) async {
                       if (state is UpLoadImageError) {
-                        debugPrint(state.errorMessage);
+                         showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
                       }
 
                       if (state is UpLoadImageLoaded) {
@@ -44,14 +49,27 @@ buildProfileChangeBottomSheet(
                       }
 
                       if (state is UpdateUserLoaded) {
+                         showToastInfo(
+                              context: context,
+                              label: "Profile updated",
+                              isFailed: false,
+                            );
                         context.pop();
                       }
 
                       if (state is UpdateUserError) {
-                        debugPrint(state.errorMessage);
+                         showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
                       }
                       if (state is GetProfileError) {
-                        debugPrint(state.errorMessage);
+                         showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
                       }
                       if (state is GetProfileLoaded) {
                         Map<String, dynamic> params = {

@@ -130,9 +130,7 @@ class _OTPPageState extends State<OTPPage> {
              
             }
             if (state is VerifyOTPLoaded) {
-              debugPrint("calling call back function");
-              //widget.otpRequest.onSuccessCallback?.call();
-              //print(state.user);
+
               if (widget.otpRequest.isLogin) {
                Navigator.push(
                   context,

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
 import 'package:house_rental/core/strings/app_strings.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_textfield.dart';
@@ -138,15 +139,21 @@ showPinChangeProfileDialog(
                       );
                     }
                     if (state is UpdateUserLoaded) {
+                      showToastInfo(
+                              context: context,
+                              label: "Pin update success",
+                              isFailed: true,
+                            );
                       context.pop();
                     }
                     if (state is UpdateUserError) {
+                      showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
                       context.pop();
-                      OKToast(
-                        child: Text(
-                          state.errorMessage,
-                        ),
-                      );
+                      
                     
                     }
                     if (state is SigninError) {

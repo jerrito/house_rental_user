@@ -244,11 +244,11 @@ class _HomePageState extends State<HomePage> {
                                                           "",
                                                       errorBuilder:
                                                           (_, __, ___) {
-                                                        return const SizedBox(
-                                                          height: 272,
+                                                        return  SizedBox(
+                                                          height: Sizes().height(context, 0.342),
                                                         );
                                                       },
-                                                      height: 272,
+                                                      height:Sizes().height(context, 0.342),
                                                       width: double.infinity,
                                                       fit: BoxFit.cover,
                                                       //opacity: const AlwaysStoppedAnimation(.3),
@@ -353,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 });
                           }
-                          return const SizedBox(height: 100);
+                          return SizedBox(height: Sizes().height(context, 0.342));
                         },
                       ),
 

@@ -11,17 +11,24 @@ import 'package:house_rental/src/home/presentation/pages/house_detail_page.dart'
 import 'package:house_rental/src/user/presentation/pages/profile.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/", routes: [
+  return GoRouter(initialLocation: "/", 
+  routes: [
     GoRoute(
       path: "/",
       name: "connectionPage",
       builder: (context, state) => const ConnectionPage(),
-      routes: [
+    ),
+
+    GoRoute(
+          path: "/noInternet",
+          name: "noInternet",
+          builder: (context, state) => const NoInternetPage(),
+        ),
         GoRoute(
-          path: "landing",
+          path: "/landing",
           name: "landing",
           builder: (context, state) => const LandingPage(),
-        ),
+      routes: [
         GoRoute(
           path: "signup",
           name: "signup",
@@ -39,11 +46,7 @@ GoRouter goRouter() {
             id: state.uri.queryParameters["id"].toString(),
           ),
         ),
-        GoRoute(
-          path: "noInternet",
-          name: "noInternet",
-          builder: (context, state) => const NoInternetPage(),
-        ),
+        
         GoRoute(
           path: "otp_page",
           name: "otp",
@@ -70,8 +73,11 @@ GoRouter goRouter() {
             oldNumberString: state.uri.queryParameters["isLogin"].toString(),
           ),
         ),
-        GoRoute(
-          path: "home",
+       
+      ],
+    ),
+     GoRoute(
+          path: "/home",
           name: "homePage",
           builder: (context, state) => const HomePage(),
           routes: [
@@ -91,7 +97,5 @@ GoRouter goRouter() {
                 ),
           ],
         ),
-      ],
-    ),
   ]);
 }

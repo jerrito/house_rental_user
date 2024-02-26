@@ -22,14 +22,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
       listener: (context, state) {
         if (state is GetCacheDataLoaded) {
            if (state.user.uid == null) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) {
-            //     return SigninPage(
-            //       // isLogin: true,
-            //     );
-            //   }),
-            // );
+          
             context.goNamed("signin");
           } else {
             Map<String, dynamic> params = {

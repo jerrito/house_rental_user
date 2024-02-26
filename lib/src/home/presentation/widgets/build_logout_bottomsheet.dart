@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:house_rental/core/size/sizes.dart';
 import 'package:house_rental/core/spacing/whitspacing.dart';
+import 'package:house_rental/core/widgets/show_toast.dart';
 import 'package:house_rental/src/authentication/domain/entities/user.dart';
 import 'package:house_rental/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental/src/authentication/presentation/widgets/default_button.dart';
@@ -30,18 +31,27 @@ buildLogoutBottomSheet(
                       final preferences = await SharedPreferences.getInstance();
                       if (state is UpdateUserError) {
                         if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(state.errorMessage)));
+                        showToastInfo(
+                              context: context,
+                              label: state.errorMessage,
+                              isFailed: true,
+                            );
                       }
 
                       if (state is UpdateUserLoaded) {
                         // context.pop();
                         // context.goNamed("signin");
+                        if (!context.mounted) return;
+                         showToastInfo(
+                              context: context,
+                              label: "Log out success",
+                              isFailed: true,
+                            );
 
                         preferences.setString(uidKey, user!.uid!);
                         preferences.setString(phoneNumber, phoneNumber);
 
-                        if (!context.mounted) return;
+                        
                         GoRouter.of(context).goNamed("signin");
                       }
                     },
